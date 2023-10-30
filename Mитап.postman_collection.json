@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "0165f214-b5c7-42e3-a55b-015ffcc472a2",
+		"name": "Mитап",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26010236"
+	},
+	"item": [
+		{
+			"name": "create pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonValue = pm.response.json();\r",
+							"let petId = jsonValue.id\r",
+							"pm.collectionVariables.set(\"PetId\", jsonValue.id)\r",
+							"\r",
+							"let url = pm.collectionVariables.get(\"baseUrl\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest(`${url}pet`, function (response) {\r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 20,\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"dog\"\r\n  },\r\n  \"name\": \"doggie\",\r\n  \"photoUrls\": [\r\n  ],\r\n  \"tags\": [\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseUrl}}pet"
+			},
+			"response": []
+		},
+		{
+			"name": "get pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"dog\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}pet\\{{PetId}}"
+			},
+			"response": []
+		},
+		{
+			"name": "delete the pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"let schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+							"  \"title\": \"Generated schema for Root\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"code\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"type\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"code\",\r",
+							"    \"type\",\r",
+							"    \"message\"\r",
+							"  ]\r",
+							"};\r",
+							"\r",
+							"let data1 = pm.response.json()\r",
+							"\r",
+							"pm.test('Schema is valid', function () {\r",
+							"    pm.expect(tv4.validate(data1, schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{baseUrl}}pet\\{{PetId}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://petstore.swagger.io/v2/",
+			"type": "string"
+		},
+		{
+			"key": "PetId",
+			"value": ""
+		}
+	]
+}
